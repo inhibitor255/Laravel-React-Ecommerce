@@ -22,14 +22,17 @@
                             {{ $c->name }}
                         </td>
                         <td class="px-4 py-5 border border-slate-600">
-                            <a href="#"
+                            <a href="{{ route('categories.edit', $c->id) }}"
                                 class="text-white bg-purple-500 hover:bg-purple-600 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-2 mx-1">
                                 Edit
                             </a>
-                            <a href="#"
-                                class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-2 mx-1">
-                                Delete
-                            </a>
+                            <form action="{{ route('categories.destroy', $c->id) }}" method="POST"
+                                onsubmit="return confirm(`Are you sure to delete?`)"
+                                class="text-white inline bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-2 mx-1">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Delete">
+                            </form>
                         </td>
                     </tr>
                 @endforeach

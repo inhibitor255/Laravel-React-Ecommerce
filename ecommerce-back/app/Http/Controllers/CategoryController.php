@@ -51,7 +51,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -59,7 +59,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            "name" => "required"
+        ], [
+            "name.required" => "Category name is required."
+        ]);
+        Category::where("id", $category->id)->update([
+            "name" => $request->name,
+        ]);
+        return redirect()->back()->with("success", "Category updated success.");
     }
 
     /**
@@ -67,6 +75,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        Category::destroy($category->id);
+        return redirect()->back()->with("success", "Category deleted success.");
     }
 }
