@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Auth
+Route::get("/admin/login", [AuthController::class, "showLogin"])->name("auth.showLogin");
+Route::post("/admin/login", [AuthController::class, "postLogin"])->name("auth.postLogin");
+Route::get("/admin/logout", [AuthController::class, "logout"])->name("auth.logout");
 
-Route::get('/', function () {
-    return view('welcome');
+// Admin
+Route::group(["prefix" => "admin", "middleware" => ["AdminAuth"]], function () {
+    // for admin main page
+    Route::get("/", [AdminController::class, "home"])->name("admin.home");
+    // for categories CRUD
+    Route::resource("/categories", CategoryController::class);
+    // for product CRUD
+    Route::resource("/products", ProductController::class);
 });
